@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with the Fine-Tuned Model</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>Chat with the Fine-Tuned Model</h1>
+        </div>
+        <div class="chat-box">
+            <form action="/" method="post" class="chat-form">
+                <textarea id="message" name="message" style="font-size: 18px" placeholder="Type your message..."></textarea>
+                <button type="submit">Send</button>
+                <button type="submit" name="exit" value="true" class="exit-btn">Exit</button>
+            </form>
+            <p></p>
+            {% if chat_history %}
+            <div class="chat-history">
+                {% for chat in chat_history %}
+                <div class="response">
+                    <div class="user-message chat-message">
+                        <p><strong>User:</strong> {{ chat['user'] }}</p>
+                        <span class="timestamp">{{ chat['time'] }}</span> <!-- Timestamp aligned right -->
+                    </div>
+                    <div class="model-response chat-message">
+                        <p><strong>Assistant:</strong> {{ chat['response'] }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
