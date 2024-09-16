@@ -1,0 +1,220 @@
+/* Size for brand */
+nav .navbar-brand
+{
+    font-size: xx-large;
+}
+
+.drop-zone {
+    width: 100%;
+    max-width: 600px;
+    height: 200px;
+    padding: 20px;
+    border: 2px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 50px auto 10px auto; /* Reduced bottom margin to 10px */
+    cursor: pointer;
+}
+
+#file-info {
+    display: flex;
+    justify-content: center; /* Center the file-info box */
+}
+
+.file-info-box {
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa; /* Light gray background */
+    border: 1px solid #ced4da; /* Border similar to form controls */
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.file-name {
+    font-size: 14px;
+    color: #495057; /* Dark gray text color */
+    margin-right: 10px;
+}
+
+.remove-file-btn {
+    background-color: #dc3545; /* Bootstrap danger color (red) */
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.remove-file-btn:hover {
+    background-color: #c82333; /* Slightly darker red on hover */
+}
+
+.drop-zone {
+    background-color: #f1f3f5; /* Light gray */
+    border: 2px dashed #6c757d; /* Gray dashed border */
+    border-radius: 4px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.drop-zone.dragging {
+    background-color: #e9ecef; /* Darker gray when dragging */
+    border-color: #343a40; /* Dark gray border */
+}
+
+.llm-options, .new-llm-input, .current-llm-select {
+    display: none;
+    margin-top: 10px;
+}
+
+label, input[type="radio"], select, .form-control {
+    font-size: 1.25rem; /* Larger form elements */
+}
+.chat-message {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.chat-message p {
+    margin: 0;
+}
+
+.chat-llm-message {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.chat-llm-message p {
+    margin: 0;
+}
+
+.chat-llm-wrapper {
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+    min-height: 100vh; 
+    background-color: #f0f0f0;
+}
+
+.chat-llm-container {
+    width: 80%;
+    max-width: 900px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-llm-box {
+    padding: 20px;
+    background-color: #f9f9f9;
+    flex-grow: 1;
+    overflow-y: auto;
+    max-height: calc(80vh - 30px);
+}
+
+.chat-llm-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+}
+
+.chat-llm-header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.chat-llm-history {
+    margin-bottom: 20px;
+}
+
+.chat-llm-response {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #e9ecef;
+}
+
+.chat-llm-user-message p,
+.chat-llm-model-response p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.chat-llm-model-response p {
+    color: #333;
+}
+
+.chat-llm-timestamp {
+    font-size: 12px;
+    color: #888;
+    margin-left: 10px;
+    white-space: nowrap;
+}
+
+.chat-llm-form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chat-llm-form textarea {
+    width: 100%;
+    height: 40px;
+    resize: none;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+.chat-llm-form button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.chat-llm-form button:hover {
+    background-color: #0056b3;
+}
+
+.chat-llm-exit-btn {
+    background-color: #dc3545;
+    margin-left: 10px;
+}
+
+.chat-llm-exit-btn:hover {
+    background-color: #c82333; 
+}
+.chat-llm-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.chat-llm-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

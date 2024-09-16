@@ -1,0 +1,132 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ service_name }} Upload
+{% endblock %}
+
+{% block main %}
+    <h1>Directions to Upload {{ service_name }} Data</h1>
+    <div>
+        {{ message|safe }}
+    </div>
+    <h1>Upload your {{ service_name }} data</h1>
+    
+    <div class="drop-zone" id="drop-zone">
+        <p id="drop-text">
+            {% if service_name == 'WhatsApp' %}
+                Drag and drop your file here or click to select a file.
+            {% else %}
+                Drag and drop your folder here or click to select a folder.
+            {% endif %}
+        </p>
+    </div>
+
+    <div id="file-info" style="display: none; margin-top: 20px;">
+        <div class="file-info-box">
+            <span id="file-name" class="file-name"></span>
+            <button id="remove-file" type="button" class="remove-file-btn">X</button>
+        </div>
+    </div>
+    <p></p>
+    <form id="upload-form" action="/texts" method="post" enctype="multipart/form-data">
+        <input type="file" id="file-input" name="file" hidden {% if service_name == 'Discord' %}webkitdirectory directory{% endif %}>
+        <input type="hidden" name="id" value="{{ id }}">
+        <input type="hidden" name="service_name" value="{{ service_name }}">
+        <button class="btn btn-primary" type="submit" disabled>Upload</button>
+    </form>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const fileInfo = document.getElementById('file-info');
+        const fileNameSpan = document.getElementById('file-name');
+        const removeFileButton = document.getElementById('remove-file');
+        const uploadButton = document.querySelector('button[type="submit"]');
+        const dropText = document.getElementById('drop-text');
+        const isDiscord = '{{ service_name }}' === 'Discord';
+        let dataTransfer = new DataTransfer();  // Create a DataTransfer object once
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragging');
+        });
+
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragging'));
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragging');
+            const items = e.dataTransfer.items;
+
+            let traverseCount = 0;  // Track asynchronous calls
+            let filesAdded = 0;
+
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i].webkitGetAsEntry();
+                if (item) {
+                    traverseCount++;  // Increment traverse count
+                    traverseFileTree(item, () => {
+                        filesAdded++;
+                        if (filesAdded === traverseCount) {
+                            // All files have been processed
+                            handleFileSelection();
+                        }
+                    });
+                }
+            }
+        });
+
+        function traverseFileTree(item, callback, path = '') {
+            if (item.isFile) {
+                item.file(file => {
+                    const fullPath = path + file.name;
+                    addFileToInput(file, fullPath);
+                    callback();  // Signal that one file has been processed
+                });
+            } else if (item.isDirectory) {
+                const dirReader = item.createReader();
+                dirReader.readEntries(entries => {
+                    let subTraverseCount = entries.length;
+                    if (subTraverseCount === 0) callback();  // Handle empty directories
+                    for (let i = 0; i < entries.length; i++) {
+                        traverseFileTree(entries[i], () => {
+                            subTraverseCount--;
+                            if (subTraverseCount === 0) callback();  // All sub-entries processed
+                        }, path + item.name + "/");
+                    }
+                });
+            }
+        }
+
+        function addFileToInput(file, fullPath) {
+            // Append the file to the DataTransfer object
+            dataTransfer.items.add(new File([file], fullPath));
+            fileInput.files = dataTransfer.files;  // Assign all files to fileInput
+        }
+
+        fileInput.addEventListener('change', handleFileSelection);
+
+        removeFileButton.addEventListener('click', () => {
+            fileInput.value = '';
+            fileInfo.style.display = 'none';
+            uploadButton.disabled = true;
+        });
+
+        function handleFileSelection() {
+            if (fileInput.files.length > 0) {
+                if (!isDiscord) {
+                    fileNameSpan.textContent = fileInput.files[0].name;
+                } else {
+                    fileNameSpan.textContent = `${fileInput.files.length} files selected`;
+                }
+                fileInfo.style.display = 'flex';
+                uploadButton.disabled = false;
+            } else {
+                fileInfo.style.display = 'none';
+                uploadButton.disabled = true;
+            }
+        }
+    </script>
+{% endblock %}

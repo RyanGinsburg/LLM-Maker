@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+<h1 class="center">LLMs</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if database %}
+                {% for row in database %}
+                    <tr>
+                        <td>{{ row['name'] }}</td>
+                        <td>{{ row['job_status'] }}</td>
+                        <td>
+                            <form action="/info" method="post" style="display:inline-block;">
+                                <input type="hidden" name="id" value="{{ row['id'] }}">
+                                <button class="btn btn-primary" type="submit">Info</button>
+                            </form>
+                            {% if row[6] %}
+                                <form action="/use" method="post" style="display:inline-block;">
+                                    <input type="hidden" name="id" value="{{ row['id'] }}">
+                                    <input type="hidden" name="name" value="{{ row['name'] }}">
+                                    <button class="btn btn-success" type="submit">Use</button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="3">
+                        <div>No data found.</div>
+                        <div>
+                            <form action="/select" method="get">
+                                <button class="btn btn-primary" type="submit">Create LLM</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+{% endblock %}

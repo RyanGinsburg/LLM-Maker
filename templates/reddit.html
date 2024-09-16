@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Reddit
+{% endblock %}
+
+{% block main %}
+    <form action="/preview" method="post" id="previewForm" target="_blank">
+        <input type="hidden" name="id" value="{{ id }}">
+        {% if username %}
+            <div class="mb-3">
+                <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="username" name="username" value="{{ username }}" placeholder="Username" type="text">
+            </div>
+        {% else %}
+            <div class="mb-3">
+                <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="username" name="username" placeholder="Username" type="text">
+            </div>
+        {% endif %}
+        <a href={{ url }} target="_blank">
+            <button class="btn btn-primary">Preview Profile</button>
+        </a>
+    </form>
+
+    <p></p>
+
+    <form action="/reddit" method="post" onsubmit="copyUsernameToHiddenField()">
+        <input type="hidden" name="id" value="{{ id }}">
+        <input type="hidden" id="hiddenUsername" name="username" value="{{ username }}">
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+
+    <script>
+        function copyUsernameToHiddenField() {
+            var usernameInput = document.getElementById('username').value;
+            document.getElementById('hiddenUsername').value = usernameInput;
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Info
+{% endblock %}
+
+{% block main %}
+    <h1 class="center">LLM Info</h1>
+    <h4>Name: {{ info['name'] }}</h4>
+    <h4>Status: {{ info['job_status'] }}</h4>
+    <h4>Created: {{ info['created'] }}</h4>
+    <h4>Last Used: {{ info['last_used'] }}</h4>
+    {% if line_count > 0 %}
+    <h4>Total Lines of Data: {{ line_count }}</h4>
+    {% endif %}
+    <h5>Data Log:</h5>
+
+    {% if log == [''] %}
+        <h6>No data has been gathered for this LLM</h6>
+    {% else %}
+        <ul style="list-style-type: none; padding-left: 0;">
+            {% for item in log %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if info['job_name'] %}
+        <form action="/use" method="post" style="display:inline-block;">
+            <input type="hidden" name="id" value="{{ info['id'] }}">
+            <input type="hidden" name="name" value="{{ info['name'] }}">
+            <button class="btn btn-success" type="submit">Use</button>
+        </form>
+    {% else %}
+        <button class="btn btn-danger" type="submit">Not Deployable</button>
+    {% endif %}
+    <p></p>
+
+    <form action="/delete" method="post" style="display:inline-block;">
+        <input type="hidden" name="id" value="{{ info['id'] }}">
+        <button class="btn btn-primary" type="submit">Delete</button>
+    </form>
+
+    <form action="/create<{{ info['id'] }}><{{ info['name'] }}>" method="post" style="display:inline-block;">
+        <input type="hidden" name="id" value="{{ info['id'] }}">
+        <button class="btn btn-primary" type="submit">Edit/Add</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Found Users
+{% endblock %}
+
+{% block main %}
+    <style>
+        .llm-options, .new-llm-input, .current-llm-select {
+            display: none;
+            margin-top: 10px;
+        }
+
+        label, input[type="radio"], select, .form-control {
+            font-size: 1.25rem; /* Larger form elements */
+        }
+    </style>
+    <h1>Select User</h1>
+    <form action="/select_user" method="post">
+        <input type="hidden" name="id" value="{{ id }}">
+        <input type="hidden" name="service" value="{{ service }}">
+        <input type="hidden" name="user_data" value="{{ user_data_json }}">
+        {% for user in user_data.keys() %}
+            <div class="user-section">
+                <h3>{{ user }}</h3>
+                <input type="radio" id="add_to_this_llm_{{ user }}" name="action_{{ user }}" value="add_to_this_llm" onclick="toggleOptions('{{ user }}', false)">
+                <label for="add_to_this_llm_{{ user }}">Add to this LLM</label>
+
+                <input type="radio" id="discard{{ user }}" name="action_{{ user }}" value="discard" onclick="toggleOptions('{{ user }}', false)">
+                <label for="add_to_this_llm_{{ user }}">Discard</label>
+                
+                <input type="radio" id="add_to_another_llm_{{ user }}" name="action_{{ user }}" value="add_to_another_llm" onclick="toggleOptions('{{ user }}', true)">
+                <label for="add_to_another_llm_{{ user }}">Add to another LLM</label>
+                
+                <div id="llm_options_{{ user }}" class="llm-options">
+                    <input type="radio" id="new_llm_{{ user }}" name="llm_selection_{{ user }}" value="new_llm" onclick="toggleLlmInput('{{ user }}', 'new')">
+                    <label for="new_llm_{{ user }}">New LLM</label>
+                    
+                    <input type="radio" id="current_llm_{{ user }}" name="llm_selection_{{ user }}" value="current_llm" onclick="toggleLlmInput('{{ user }}', 'current')">
+                    <label for="current_llm_{{ user }}">Current LLM</label>
+
+                    <div id="new_llm_input_{{ user }}" class="new-llm-input">
+                        <label for="new_llm_name_{{ user }}">Enter new LLM name:</label>
+                        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" type="text" id="new_llm_name_{{ user }}" name="new_llm_name_{{ user }}">
+                    </div>
+                    
+                    <div id="current_llm_select_{{ user }}" class="current-llm-select">
+                        <label for="current_llm_{{ user }}">Select existing LLM:</label>
+                        <select id="current_llm_{{ user }}" name="current_llm_{{ user }}">
+                            {% for llm in llms %}
+                                <option value="{{ llm }}">{{ llm }}</option>
+                            {% endfor %}
+                        </select>
+                        
+                    </div>
+                </div>
+            </div>
+            <hr>
+        {% endfor %}
+        <input type="hidden" name="id" value="{{ id }}">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <script>
+        function toggleOptions(user, showOptions) {
+            var llmOptions = document.getElementById('llm_options_' + user);
+            llmOptions.style.display = showOptions ? 'block' : 'none';
+        }
+
+        function toggleLlmInput(user, type) {
+            console.log('toggleLlmInput called for user: ' + user + ' with type: ' + type);
+            var newLlmInput = document.getElementById('new_llm_input_' + user);
+            var currentLlmSelect = document.getElementById('current_llm_select_' + user);
+        
+            if (type === 'new') {
+                newLlmInput.style.display = 'block';
+                currentLlmSelect.style.display = 'none';
+            } else if (type === 'current') {
+                newLlmInput.style.display = 'none';
+                currentLlmSelect.style.display = 'block';
+            }
+        }
+        
+        
+    </script>
+{% endblock %}

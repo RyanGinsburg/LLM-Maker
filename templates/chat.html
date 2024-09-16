@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Chat with LLM
+{% endblock %}
+
+{% block main %}
+
+<div class="chat-llm-wrapper">
+    <div class="chat-llm-container">
+        <div class="chat-llm-header">
+            <h1>Chat with {{ name }}</h1>
+        </div>
+        <div class="chat-llm-box">
+            <form action="/use" method="post" class="chat-llm-form">
+                <textarea id="message" name="message" style="font-size: 18px; height: 4vh;" placeholder="Type your message..."></textarea>
+                <button type="submit">Send</button>
+                <input type="hidden" name="id" value="{{ id }}">
+                <input type="hidden" name="name" value="{{ name }}">
+            </form>
+            <p></p>
+            <form action="/exit" method="post" style="display:inline-block;" class="chat-llm-form">
+                <button type="submit" class="chat-llm-exit-btn">Exit</button>
+                <input type="hidden" name="id" value="{{ id }}">
+            </form>
+            <p></p>
+            {% if chat_history %}
+            <div class="chat-llm-history">
+                {% for chat in chat_history %}
+                <div class="chat-llm-response">
+                    <div class="chat-llm-user-message chat-llm-message">
+                        <p><strong>User:</strong> {{ chat['user'] }}</p>
+                        <span class="chat-llm-timestamp">{{ chat['time'] }}</span>
+                    </div>
+                    <div class="chat-llm-model-response chat-llm-message">
+                        <p><strong>Assistant:</strong> {{ chat['response'] }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

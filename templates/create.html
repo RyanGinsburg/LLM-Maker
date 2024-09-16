@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Create
+{% endblock %}
+
+{% block main %}
+    <h1>LLM: {{ name }}
+    <input type="hidden" name="id" value="{{ id }}">
+    <h3>Add data to LLM</h3>
+    <form action="/whatsapp" method="post">
+        <input type="hidden" name="id" value="{{ id }}">
+        <button class="btn btn-primary" type="submit">Whatsapp</button>
+    </form>
+    <p></p>
+    <form action="/discord" method="post">
+        <input type="hidden" name="id" value="{{ id }}">
+        <button class="btn btn-primary" type="submit">Discord</button>
+    </form>
+    <p></p>
+    <form action="/r" method="post">
+        <input type="hidden" name="id" value="{{ id }}">
+        <button class="btn btn-primary" type="submit">Reddit</button>
+    </form>
+    <p></p>
+    <h5>Data Log</h5>
+    <h6>Total lines of data gathered: {{ line_count }}</h6>
+    {% if log == [''] or log is none or log == [] %}
+        <h7>No data has been gathered for this LLM</h7>
+    {% else %}
+        <ul style="list-style-type: none; padding-left: 0;">
+            {% for item in log %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </l>
+        <p>
+    {% endif %}
+    <p></p>
+    {% if line_count < 10 %}
+        <button class="btn btn-danger" type="submit">10 or More Lines of Data Required For Fine-tunning</button>
+    {% else %}
+        {% if not fine_tuning %}
+            <form action="/deploy" method="post">
+                <input type="hidden" name="id" value="{{ id }}">
+                <button class="btn btn-success" type="submit">Start Fine-tuning</button>
+            </form>
+        {% else %}
+            <form action="/cancell" method="post">
+                <input type="hidden" name="id" value="{{ id }}">
+                <button class="btn btn-danger" type="submit">Cancell Fine-tuning</button>
+            </form>
+        {% endif %}
+    {% endif %}
+{% endblock %}

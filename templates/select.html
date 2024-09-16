@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <form action="/select" method="post">
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="name" name="name" placeholder="LLM name" type="text">
+        </div>
+        <button class="btn btn-primary" type="submit">Continue</button>
+    </form>
+{% endblock %}
